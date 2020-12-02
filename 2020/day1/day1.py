@@ -1,9 +1,15 @@
+# https://adventofcode.com/2020/day/1
+
+
 from itertools import combinations
 from math import prod
+from typing import Tuple
 
 
-def check_sum_give_prod(target_sum, nums):
-    """Check if given integers' sum is 2020. If True, return their product."""
+def check_sum_give_prod(target_sum: int, nums: Tuple[int, ...]) -> int:
+    """Check if given integers' sum is equal to the given target sum.
+    If True, return their product.
+    """
     if sum(nums) == target_sum:
         return prod(nums)
 
@@ -12,7 +18,7 @@ def check_sum_give_prod(target_sum, nums):
 
 # Read input into list of integers
 with open("input.txt", "r") as inputf:
-    expenses = list(map(int, inputf.read().split("\n")))
+    expenses = [int(expense) for expense in inputf.readlines()]
 
 if __name__ == "__main__":
     # Iterate through expenses one pair at a time, ignoring order
