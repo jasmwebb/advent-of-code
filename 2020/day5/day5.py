@@ -8,7 +8,7 @@ def find_seat(barcode, type):
         barcode_chars = barcode[:7]
         check_range = [0, 127]
         lower_char = "F"
-    else:  # type = "col"
+    else:  # type == "col"
         barcode_chars = barcode[7:10]
         check_range = [0, 7]
         lower_char = "L"
@@ -38,10 +38,8 @@ if __name__ == "__main__":
         col_num = find_seat(barcode, "col")
         seat_IDs.append(row_num * 8 + col_num)
 
-    print(f"Part 1: {max(seat_IDs)}")
+    print(f"Part 1: {max(seat_IDs)}")  # 922
 
-    seat_IDs.sort()
-
-    for seat in range(seat_IDs[0], seat_IDs[-1]):
+    for seat in range(min(seat_IDs), max(seat_IDs)):
         if seat not in seat_IDs:
-            print(f"Part 2: {seat}")
+            print(f"Part 2: {seat}")  # 747
