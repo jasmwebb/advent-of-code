@@ -25,7 +25,7 @@ def get_input(file) -> tuple:
         return (num_people, group_answers)
 
 
-def count_every_yes(members: list, answers: list) -> list:
+def count_everyone_yes(members: list, answers: list) -> list:
     """Counts the number of questions everyone in a group answered yes to.
     Returns as a list of integers indicating number of yes's per group.
     """
@@ -33,14 +33,14 @@ def count_every_yes(members: list, answers: list) -> list:
     groups_yes = []
 
     for group in members_answers:
-        num_every_yes = 0
+        num_everyone_yes = 0
 
         # Count the number of times a question had a yes answer within group
         for question, num_yes in Counter(group[1]).items():
             if num_yes == group[0]:
-                num_every_yes += 1
+                num_everyone_yes += 1
 
-        groups_yes.append(num_every_yes)
+        groups_yes.append(num_everyone_yes)
 
     return groups_yes
 
@@ -54,5 +54,5 @@ if __name__ == "__main__":
     num_any = [len(set(group)) for group in group_answers]
     print(f"Part 1: {sum(num_any)}")  # 6273
 
-    num_every = count_every_yes(num_group_members, group_answers)
-    print(f"Part 2: {sum(num_every)}")  # 3254
+    num_everyone = count_everyone_yes(num_group_members, group_answers)
+    print(f"Part 2: {sum(num_everyone)}")  # 3254
