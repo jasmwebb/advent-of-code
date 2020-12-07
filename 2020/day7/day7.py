@@ -64,10 +64,11 @@ def find_inner_bags(rules: dict, bag_color: list) -> int:
 
 if __name__ == "__main__":
     input_file = "input.txt"
+    my_bag_color = ["shiny gold"]
     bag_rules = get_rules(input_file)
 
-    outermost_bags = find_outermost_bag(bag_rules, ["shiny gold"])
+    outermost_bags = find_outermost_bag(bag_rules, my_bag_color)
     print(f"Part 1: {len(set(outermost_bags))}")  # 268
 
-    inner_bags = find_inner_bags(bag_rules, ["shiny gold"])
+    inner_bags = find_inner_bags(bag_rules, my_bag_color)
     print(f"Part 2: {inner_bags}")  # 7867
