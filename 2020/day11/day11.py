@@ -39,7 +39,7 @@ class Seats:
 
     def apply_rules(self, seat):
         """Applies rules that determine if seat is empty or occupied."""
-        r, c = seat[0], seat[1]
+        r, c = seat
         seat_val = self.seats[seat[0]][seat[1]]
         deltas = list(product([0, 1, -1], repeat=2))[1:]
 
