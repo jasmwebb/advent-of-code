@@ -47,6 +47,8 @@ class Ship:
         then moves the ship to the waypoint.
         Sets the ship's Manhattan distance from starting point to ending point.
         """
+        calc_move = lambda coord, d: (d * x for x in coord)
+        translate_coord = lambda coord, d: tuple(sum(x) for x in zip(coord, d))
         rotate = {
             90: (lambda coord: tuple(prod(x) for x in zip(coord, (-1, 1)))[::-1]),
             180: (lambda coord: tuple(prod(x) for x in zip(coord, (-1, -1)))),
@@ -59,16 +61,12 @@ class Ship:
         for action, units in self.instructions:
             # F moves ship to waypoint `units` times, waypoint stays in place
             if action == "F":
-                move = (units * x for x in self.waypoint)
-                self.ship_coord = tuple(
-                    sum(x) for x in zip(self.ship_coord, move)
-                )
+                move = calc_move(self.waypoint, units)
+                self.ship_coord = translate_coord(self.ship_coord, move)
             # NESW moves waypoint, ship stays in place
             if action in self.movement:
-                move = (units * x for x in self.movement[action])
-                self.waypoint = tuple(
-                    sum(x) for x in zip(self.waypoint, move)
-                )
+                move = calc_move(self.movement[action], units)
+                self.waypoint = translate_coord(self.waypoint, move)
             # LR rotates waypoint, ship stays in place
             if action in self.turn:
                 self.waypoint = rotate[units * self.turn[action]](self.waypoint)
