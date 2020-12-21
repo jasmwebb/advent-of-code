@@ -8,10 +8,10 @@ def generate_neighbors(coord, deltas):
     """Generates the coordinates of all 26 possible neighbors for a given
     coordinate.
     """
-    x, y, z = coord
+    x, y, z, w = coord
 
-    for dx, dy, dz in deltas:
-        yield (x + dx, y + dy, z + dz)
+    for dx, dy, dz, dw in deltas:
+        yield (x + dx, y + dy, z + dz, w + dw)
 
 
 def count_active(neighbors):
@@ -24,17 +24,16 @@ def count_active(neighbors):
 
 
 if __name__ == "__main__":
-    # Create coordinates for each char in input (x, y, z, status)
+    # Create coordinates for each char in input and set value to its status
     with open("input.txt", "r") as inputf:
         cube_coords = {
-            (x, y, 0): cube == "#"  # Initial z = 0, value: cube status
+            (x, y, 0, 0): cube == "#"
             for y, line in enumerate(inputf)
             for x, cube in enumerate(line.rstrip())
         }
 
-    # List all neighbor deltas, ignoring (0, 0, 0)
-    neighbor_deltas = list(product((0, 1, -1), repeat=3))[1:]
-    neighbor_deltas.sort(key=lambda d: d[2])
+    # List all neighbor deltas, ignoring (0, 0, 0, 0)
+    neighbor_deltas = list(product((0, 1, -1), repeat=4))[1:]
     manipulated_coords = deepcopy(cube_coords)
     cycle = 0
 
@@ -63,4 +62,7 @@ if __name__ == "__main__":
         cube_coords = deepcopy(manipulated_coords)
         cycle += 1
 
-    print(f"Print 1: {sum(cube_coords.values())}")  # 267
+    # print(f"Print 1: {sum(cube_coords.values())}")  # 267
+
+    """Added w coordinates to initial coordinates setup and neighbor deltas"""
+    print(f"Print 2: {sum(cube_coords.values())}")  # 1812
