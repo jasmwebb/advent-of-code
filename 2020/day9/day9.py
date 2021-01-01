@@ -48,4 +48,4 @@ if __name__ == "__main__":
     invalid_i = find_invalid_sum(xmas_nums, preamble_len)
     print(f"Part 1: {xmas_nums[invalid_i]}")  # 15353384
 
-    print(f"Part 2: {find_weakness(xmas_nums, invalid_i)}")
+    print(f"Part 2: {find_weakness(xmas_nums, invalid_i)}")  # 2466556
