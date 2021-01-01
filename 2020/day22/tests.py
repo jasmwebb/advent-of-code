@@ -28,11 +28,11 @@ class TestPlay(unittest.TestCase):
             27: (deque((1,)), deque((7, 3, 2, 10, 6, 8, 5, 9, 4)))
         }
 
-        for round in range(28):
+        for r in range(28):
             decks = day22.play_round(decks)
-            if round in end_of_round:
-                with self.subTest(round=round):
-                    self.assertEqual(end_of_round[round], decks)
+            if r in end_of_round:
+                with self.subTest(r=r):
+                    self.assertEqual(end_of_round[r], decks)
 
     def test_winner(self):
         """Checks that full gameplay function returns the expected winner."""

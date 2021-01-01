@@ -17,18 +17,13 @@ def parse_decks(filename):
 
 def play_round(player_decks):
     """Simulates one round of play and returns the updated player decks."""
-    p1, p2 = player_decks
-    p1_card = p1.popleft()
-    p2_card = p2.popleft()
+    plays = (player_decks[0].popleft(), player_decks[1].popleft())
+    winner, high_card = max(enumerate(plays), key=itemgetter(1))
 
-    if p1_card > p2_card:
-        p1.append(p1_card)
-        p1.append(p2_card)
-    else:  # p2_card > p1_card
-        p2.append(p2_card)
-        p2.append(p1_card)
+    player_decks[winner].append(high_card)
+    player_decks[winner].append(min(plays))  # low_card
 
-    return (p1, p2)
+    return player_decks
 
 
 def play_game(player_decks):
@@ -39,16 +34,14 @@ def play_game(player_decks):
     while all(player_decks):
         player_decks = play_round(player_decks)
 
-    winner, deck = max(enumerate(player_decks), key=itemgetter(1))
-
-    return winner, deck
+    return max(enumerate(player_decks), key=itemgetter(1))
 
 
 def calculate_score(winning_deck):
     """Calculates score from winner's deck."""
-    deck = reversed(winning_deck)
-
-    return sum(prod((i + 1, card)) for i, card in enumerate(deck))
+    return sum(
+        prod((i + 1, card)) for i, card in enumerate(reversed(winning_deck))
+    )
 
 
 if __name__ == "__main__":
