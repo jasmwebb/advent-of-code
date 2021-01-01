@@ -1,5 +1,5 @@
 import unittest
-from day21 import parse_ingredients, crossref
+import day21
 
 
 class TestInput(unittest.TestCase):
@@ -7,8 +7,8 @@ class TestInput(unittest.TestCase):
 
     def setUp(self):
         (self.ingredients,
-         self.allergen_linked_to,
-         self.foods_containing) = parse_ingredients("test.txt")
+         self.allergens_in,
+         self.foods_containing) = day21.parse_ingredients("test.txt")
 
     def test_foods(self):
         expected = (
@@ -29,7 +29,7 @@ class TestInput(unittest.TestCase):
             "fvjkl": {"dairy", "soy"},
             "sbzzf": {"dairy", "fish"}
         }
-        self.assertEqual(expected, self.allergen_linked_to)
+        self.assertEqual(expected, self.allergens_in)
 
     def test_allergens(self):
         expected = {
@@ -40,19 +40,38 @@ class TestInput(unittest.TestCase):
         self.assertEqual(expected, self.foods_containing)
 
 
-class TestCrossref(unittest.TestCase):
+class TestSafe(unittest.TestCase):
     """Tests for determining hypoallergenic ingredients."""
 
     def setUp(self):
-        self.test_data = parse_ingredients("test.txt")
-        self.hypo, self.occurences = crossref(self.test_data)
+        self.test_data = day21.parse_ingredients("test.txt")
+        (self.occurences,
+         self.updated_data) = day21.determine_safe(self.test_data)
 
     def test_hypoallergenic(self):
         expected = {"kfcds", "nhms", "sbzzf", "trh"}
-        self.assertEqual(expected, set(self.hypo))
+        hypoallergenic = {
+            ingredient
+            for ingredient, allergens in self.updated_data.items()
+            if not len(allergens)
+        }
+        self.assertEqual(expected, hypoallergenic)
 
     def test_counter(self):
         self.assertEqual(5, self.occurences)
+
+
+class TestAllergens(unittest.TestCase):
+    """Tests for determining allergenic ingredients."""
+
+    def setUp(self):
+        self.test_data = day21.parse_ingredients("test.txt")
+        self.updated_data = day21.determine_safe(self.test_data)[1]
+        self.allergens = day21.determine_allergens(self.updated_data)
+
+    def test_allergens(self):
+        expected = "mxmxvkd,sqjhc,fvjkl"
+        self.assertEqual(expected, self.allergens)
 
 
 if __name__ == '__main__':
