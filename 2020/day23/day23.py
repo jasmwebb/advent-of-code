@@ -1,68 +1,45 @@
 # https://adventofcode.com/2020/day/23
 
-def prep_move(cups, move=0):
+from collections import deque
+
+
+def validate_destination(destination, pick_up_list, cup_list):
+    """Determines the value of the destination cup."""
+    if destination in pick_up_list:
+        return validate_destination(destination - 1, pick_up_list, cup_list)
+
+    if destination < min(cup_list):
+        return validate_destination(max(cup_list), pick_up_list, cup_list)
+
+    return destination
+
+
+def make_move(cups):
     """Sets variables necessary to complete a single move."""
-    num_cups = len(cups)
-
-    if move >= num_cups:
-        move -= num_cups
-
-    current = cups[move]
-    current_copy = cups[move]
-    start = move + 1
-    end = move + 4
-    pick_up = cups[start:end]
-    num_pick_up = len(pick_up)
-
-    if num_pick_up < 3:
-        pick_up += cups[:3 - num_pick_up]
-
-    destination = None
-
-    while destination is None or start <= destination < end:
-        current_copy -= 1
-
-        try:
-            destination = cups.index(current_copy)
-        except ValueError:
-            current_copy = max(cups)
-            destination = cups.index(current_copy)
-
-    return (pick_up, current, destination, start, end)
-
-
-def make_move(cups, prep, move):
-    """Simulates a single move then returns new cups order."""
-    pick_up, current, destination, start, end = prep
-    destination += 1
-
-    if destination > start:
-        cups[destination:destination] = pick_up
-        del cups[start:end]
-    else:  # destination < start
-        num_cups = len(cups)
-
-        if end > num_cups:
-            end -= num_cups
-            del cups[start:]
-            del cups[:end]
-            destination -= 1
-        else:
-            del cups[start:end]
-
-        cups[destination:destination] = pick_up
-        current_i = cups.index(current)
-
-        if current_i != move:
-            new_0 = current_i - move
-            cups = cups[new_0:] + cups[:new_0]
+    cups = deque(cups)
+    current = cups.popleft()
+    pick_up = [cups.popleft() for _ in range(3)]
+    cups = list(cups)
+    destination = validate_destination(current - 1, pick_up, cups)
+    destination = cups.index(destination) + 1
+    cups = cups[:destination] + pick_up + cups[destination:] + [current]
 
     return cups
+
+
+def stringify(final_order):
+    """Creates a string from the final order of cups, starting from (but
+    excluding) the cup labelled 1, going clockwise.
+    """
+    one = final_order.index(1)
+
+    return "".join(map(str, final_order[one + 1:] + final_order[:one]))
 
 
 if __name__ == "__main__":
     cups = [int(n) for n in "942387615"]
 
-    for move in range(1):
-        prep = prep_move(cups, move)
-        make_move(cups, prep)
+    for move in range(100):
+        cups = make_move(cups)
+
+    print("Part 1:", stringify(cups))  # 36542897
