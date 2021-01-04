@@ -19,9 +19,7 @@ def play_round(player_decks):
     """Simulates one round of play and returns the updated player decks."""
     plays = (player_decks[0].popleft(), player_decks[1].popleft())
     winner, high_card = max(enumerate(plays), key=itemgetter(1))
-
-    player_decks[winner].append(high_card)
-    player_decks[winner].append(min(plays))  # low_card
+    player_decks[winner].extend((high_card, min(plays)))
 
     return player_decks
 
