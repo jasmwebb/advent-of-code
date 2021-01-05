@@ -2,7 +2,7 @@ import unittest
 import day24
 
 
-class Test_(unittest.TestCase):
+class Test_Tiles(unittest.TestCase):
     """Tests for simulating laying hexagonal tiles."""
 
     def setUp(self):
