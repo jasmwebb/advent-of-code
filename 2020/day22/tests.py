@@ -9,39 +9,31 @@ class TestPlay(unittest.TestCase):
 
     def setUp(self):
         self.decks = day22.parse_decks("test.txt")
-        self.winner = day22.play_game(deepcopy(self.decks))
+        self.winner1 = day22.play_game(deepcopy(self.decks))
+        self.winner2 = day22.play_recursive(deepcopy(self.decks))
 
     def test_decks(self):
         """Tests for correct input parsing."""
         expected = (deque((9, 2, 6, 3, 1)), deque((5, 8, 4, 7, 10)))
         self.assertEqual(expected, self.decks)
 
-    def test_rounds(self):
-        """Tests for proper play for a selection of rounds."""
-        decks = deepcopy(self.decks)
-        end_of_round = {
-            0: (deque((2, 6, 3, 1, 9, 5)), deque((8, 4, 7, 10))),
-            1: (deque((6, 3, 1, 9, 5)), deque((4, 7, 10, 8, 2))),
-            2: (deque((3, 1, 9, 5, 6, 4)), deque((7, 10, 8, 2))),
-            3: (deque((1, 9, 5, 6, 4)), deque((10, 8, 2, 7, 3))),
-            26: (deque((4, 1)), deque((9, 7, 3, 2, 10, 6, 8, 5))),
-            27: (deque((1,)), deque((7, 3, 2, 10, 6, 8, 5, 9, 4)))
-        }
-
-        for r in range(28):
-            decks = day22.play_round(decks)
-            if r in end_of_round:
-                with self.subTest(r=r):
-                    self.assertEqual(end_of_round[r], decks)
-
-    def test_winner(self):
-        """Checks that full gameplay function returns the expected winner."""
+    def test_game(self):
+        """Tests that full non-recursive gameplay returns the expected winner.
+        """
         expected = (1, deque([3, 2, 10, 6, 8, 5, 9, 4, 7, 1]))
-        self.assertEqual(expected, self.winner)
+        self.assertEqual(expected, self.winner1)
+
+    def test_recursive(self):
+        """Tests that full recursive gameplay returns the expected winner."""
+        expected = (1, deque([7, 5, 6, 2, 4, 1, 10, 8, 9, 3]))
+        self.assertEqual(expected, self.winner2)
 
     def test_score(self):
         """Tests for proper score calculation at the end of the game."""
-        self.assertEqual(306, day22.calculate_score(self.winner[1]))
+        expected = (306, 291)
+        scores = (day22.calculate_score(self.winner1[1]),
+                  day22.calculate_score(self.winner2[1]))
+        self.assertEqual(expected, scores)
 
 
 if __name__ == "__main__":
