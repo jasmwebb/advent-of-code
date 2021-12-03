@@ -82,6 +82,6 @@ if __name__ == "__main__":
     print(f"Part 1: {gamma_rate * epsilon_rate}")  # 3969000
 
     oxygen_generator_rating = get_life_support_factor("oxygen", diagnostic)
-    co2_scrubber_rating = get_life_support_factor("o2", diagnostic)
+    co2_scrubber_rating = get_life_support_factor("co2", diagnostic)
 
     print(f"Part 2: {oxygen_generator_rating * co2_scrubber_rating}")  # 4267809
