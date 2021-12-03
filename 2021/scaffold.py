@@ -22,3 +22,9 @@ def get_input():
 
 if __name__ == "__main__":
     input_path = get_input()
+
+    with open(input_path, "r") as inputf:
+        pass
+
+    print(f"Part 1: {}")
+    print(f"Part 2: {}")
