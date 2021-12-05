@@ -37,8 +37,6 @@ def setup_boards(raw_boards, board_size):
 
 
 def mark_boards(drawn_num, boards):
-    boards = boards
-
     for board in boards:
         for line in board:
             if drawn_num in line:
@@ -58,9 +56,7 @@ def check_winners(boards):
 
 
 def play_round(drawn_num, boards):
-    boards = mark_boards(drawn_num, boards)
-
-    return check_winners(boards)
+    return check_winners(mark_boards(drawn_num, boards))
 
 
 def play_bingo(numbers, boards):
@@ -87,7 +83,6 @@ def calc_final_score(winning_num, winning_board):
 
 def play_to_last(numbers, boards_in_play):
     numbers_start = 0
-    winning_num = None
 
     while len(boards_in_play[0]):
         numbers = numbers[numbers_start:]
